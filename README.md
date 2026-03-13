@@ -4,7 +4,7 @@
 
 So here's the thing — I have a girl gang of 4, and I'd already promised them I'd make something fun for us. No pressure, right? So I sat down and built this: a virtual photobooth that actually feels like a real one. Solo strips, squad strips, frames, stickers, captions — the whole deal.
 
-It started as a "I have to make SOMETHING" project and turned into something I'm actually really proud of. Cute little app for a cute little gang. But honestly? Anyone can use it. Bring your friends, bring your situationship, bring your family at a wedding — it fits all.
+It started as a "I have to make SOMETHING" project and turned into something I'm actually really proud of. Also — we're 4 friends living far apart with literally zero photos together, so I built us a place where distance doesn't matter. Cute little app for a cute little gang. But anyone can use it — bring your friends, your family, whoever.
 
 **Live app → [the-missing-booth.vercel.app](https://the-missing-booth.vercel.app)**
 
@@ -74,6 +74,9 @@ FRONTEND_URL=http://localhost:3000
 ## 💌 Why this exists
 
 Honestly? I promised my girls I'd build them something. So I did.
-But it's for everyone — any squad, any occasion, any vibe.
+
+But there's a second reason too — we're a gang of 4 and we all live far away from each other. We don't meet often, and because of that we barely have any photos together. Like, zero. So I built us a place where distance doesn't matter and we can still have our photobooth moment, together.
+
+It's for everyone though — any squad, any occasion, any vibe.
 
 Made with love (and mild sleep deprivation) by [Purva](https://github.com/Purva137) 🎞️

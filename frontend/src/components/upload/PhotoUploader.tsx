@@ -296,6 +296,7 @@ function SquadSlot({ roomCode, memberId, currentPhoto }: {
               </div>
             </motion.div>
           ) : (
+            // @ts-ignore framer-motion type conflict
             <motion.div key="upload"
               className="flex flex-col items-center justify-center transition-all"
               style={{

@@ -7,13 +7,12 @@ import { uploadApi } from '@/lib/api'
 import { useRoomStore } from '@/lib/store'
 import { CameraCapture } from './CameraCapture'
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
 function getImageUrl(url?: string): string {
   if (!url) return ''
   if (url.startsWith('http')) return url
-  if (typeof window === 'undefined') return `http://localhost:8000${url}`
-  const h = window.location.hostname
-  const base = h === 'localhost' || h === '127.0.0.1' ? 'http://localhost:8000' : `http://${h}:8000`
-  return `${base}${url}`
+  return `${API_BASE}${url}`
 }
 
 // ── Solo uploader — 4 slots in a vertical strip layout ───────────────────────

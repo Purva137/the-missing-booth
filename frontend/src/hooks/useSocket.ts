@@ -3,11 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import type { ServerToClientEvents, ClientToServerEvents, Room, Member, StickerPlacement } from '@/types'
 
-function getWsUrl(): string {
-  if (typeof window === 'undefined') return 'http://localhost:8000'
-  const h = window.location.hostname
-  return h === 'localhost' || h === '127.0.0.1' ? 'http://localhost:8000' : `http://${h}:8000`
-}
+const WS_BASE = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000'
 
 type BoothSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
@@ -16,7 +12,7 @@ export function useSocket() {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    const socket: BoothSocket = io(getWsUrl(), {
+    const socket: BoothSocket = io(WS_BASE, {
       path: '/socket.io',
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 5,

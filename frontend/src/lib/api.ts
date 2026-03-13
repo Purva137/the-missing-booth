@@ -1,16 +1,12 @@
 import axios from 'axios'
 import type { Room, GenerationRequest } from '@/types'
 
-function getBackendUrl(): string {
-  if (typeof window === 'undefined') return 'http://localhost:8000'
-  const h = window.location.hostname
-  return h === 'localhost' || h === '127.0.0.1' ? 'http://localhost:8000' : `http://${h}:8000`
-}
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export const api = axios.create({ timeout: 30000 })
 
 api.interceptors.request.use((config) => {
-  config.baseURL = getBackendUrl()
+  config.baseURL = API_BASE
   return config
 })
 

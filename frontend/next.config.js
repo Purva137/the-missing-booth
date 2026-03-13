@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      root: __dirname,
-    },
-  },
   images: {
     remotePatterns: [
       { protocol: 'http', hostname: '**' },
@@ -18,5 +13,4 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 }
-
 module.exports = nextConfig

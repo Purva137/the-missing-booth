@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft } from 'lucide-react'
@@ -18,6 +18,14 @@ const THEMES: { id: ThemeType; label: string; emoji: string; desc: string; borde
 ]
 
 export default function CreatePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CreatePageInner />
+    </Suspense>
+  )
+}
+
+function CreatePageInner() {
   const router = useRouter()
   const params = useSearchParams()
   const { setRoom, setMyInfo, clearRoom } = useRoomStore()

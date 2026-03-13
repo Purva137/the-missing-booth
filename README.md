@@ -1,80 +1,79 @@
-# The Missing Booth 📸
+# 📸 The Missing Booth
 
-A virtual photobooth app — create solo or squad photo strips with themed frames.
+> The photobooth that was always missing from every hangout.
 
-**Live demo:** https://the-missing-booth.vercel.app
+So here's the thing — I have a girl gang of 4, and I'd already promised them I'd make something fun for us. No pressure, right? So I sat down and built this: a virtual photobooth that actually feels like a real one. Solo strips, squad strips, frames, stickers, captions — the whole deal.
 
-## Tech Stack
+It started as a "I have to make SOMETHING" project and turned into something I'm actually really proud of. Cute little app for a cute little gang. But honestly? Anyone can use it. Bring your friends, bring your situationship, bring your family at a wedding — it fits all.
 
-- **Frontend:** Next.js 14, TypeScript, Tailwind CSS, Framer Motion, Socket.IO client
-- **Backend:** FastAPI, Python 3.10, Redis, Pillow, python-socketio
-- **Realtime:** Socket.IO (rooms, live photo sync, generation progress)
+**Live app → [the-missing-booth.vercel.app](https://the-missing-booth.vercel.app)**
 
-## Running Locally
+---
 
-### Frontend
+## ✨ What you can do
 
+- **Solo Booth** — just you, your camera, and a photo strip that's all yours
+- **Squad Booth** — create a room, share the code, everyone joins and shoots together
+- **Frame selection** — pick the vibe that matches the moment
+- **Sticker addition** — because plain photos are boring
+- **Custom captions** — say what you want to say
+- **Real-time rooms** — your squad joins live, no waiting around
+
+---
+
+## 🛠 Tech stack
+
+| Layer | Tech |
+|---|---|
+| Frontend | Next.js 14, TypeScript, Tailwind, Framer Motion |
+| Backend | FastAPI, Python, Socket.IO |
+| Storage | Redis |
+| Image processing | Pillow |
+| Frontend deploy | Vercel |
+| Backend deploy | Render |
+
+---
+
+## 🚀 Run it locally
+
+**Frontend**
 ```bash
 cd frontend
 npm install
-cp .env.example .env.local   # then fill in values
+cp .env.example .env.local  # add your backend URL
 npm run dev
 ```
 
-Runs on http://localhost:3000
-
-### Backend
-
+**Backend**
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env          # then fill in values
+cp .env.example .env  # add your Redis URL etc.
 uvicorn app.main:app --reload
 ```
 
-Runs on http://localhost:8000
+---
 
-Redis is required. The backend will attempt to start a Docker Redis container automatically, or you can run it manually:
+## 🔐 Environment variables
 
-```bash
-docker run -d -p 6379:6379 redis:alpine
+**Frontend** (`frontend/.env.local`)
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_WS_URL=ws://localhost:8000
 ```
 
-## Environment Variables
-
-### Frontend (`frontend/.env.local`)
-
-| Variable | Description | Default |
-|---|---|---|
-| `NEXT_PUBLIC_API_URL` | Backend HTTP base URL | `http://localhost:8000` |
-| `NEXT_PUBLIC_WS_URL` | Backend WebSocket base URL | `ws://localhost:8000` |
-
-### Backend (`backend/.env`)
-
-| Variable | Description | Default |
-|---|---|---|
-| `REDIS_URL` | Redis connection URL | `redis://localhost:6379` |
-| `APP_NAME` | Application name | `The Missing Booth` |
-| `FRONTEND_URL` | Frontend origin (for CORS) | `http://localhost:3000` |
-
-## Project Structure
-
+**Backend** (`backend/.env`)
 ```
-themissingbooth/
-├── frontend/          # Next.js 14 app
-│   ├── src/
-│   │   ├── app/       # Pages (/, /create, /join, /room/[code])
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   └── lib/       # API client, store
-│   └── next.config.js
-└── backend/           # FastAPI app
-    ├── app/
-    │   ├── main.py    # App entry + Socket.IO
-    │   ├── routers/   # rooms, uploads, generate
-    │   └── services/  # room, storage, strip
-    ├── requirements.txt
-    └── Dockerfile
+REDIS_URL=redis://localhost:6379
+APP_NAME=The Missing Booth
+FRONTEND_URL=http://localhost:3000
 ```
+
+---
+
+## 💌 Why this exists
+
+Honestly? I promised my girls I'd build them something. So I did.
+But it's for everyone — any squad, any occasion, any vibe.
+
+Made with love (and mild sleep deprivation) by [Purva](https://github.com/Purva137) 🎞️

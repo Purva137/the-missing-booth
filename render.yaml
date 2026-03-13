@@ -1,0 +1,42 @@
+services:
+  # FastAPI Backend
+  - type: web
+    name: snaptogether-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile.backend
+    dockerContext: ./backend
+    plan: starter
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: STORAGE_BACKEND
+        value: s3
+      - key: FRONTEND_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_BUCKET_NAME
+        sync: false
+      - key: AWS_REGION
+        value: us-east-1
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: snaptogether-redis
+          property: connectionString
+      - key: RUNPOD_API_KEY
+        sync: false
+      - key: RUNPOD_ENDPOINT_ID
+        sync: false
+
+  # Redis
+  - type: redis
+    name: snaptogether-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru

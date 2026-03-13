@@ -1,109 +1,80 @@
-# SnapTogether 📸
+# The Missing Booth 📸
 
-> AI-powered group photo generator — upload solo photos, get a realistic group image together.
+A virtual photobooth app — create solo or squad photo strips with themed frames.
 
-## Architecture Overview
+**Live demo:** https://the-missing-booth.vercel.app
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        SnapTogether                             │
-│                                                                 │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────────┐  │
-│  │  Next.js 14  │◄──►│  FastAPI     │◄──►│   RunPod GPU     │  │
-│  │  (Frontend)  │    │  (Backend)   │    │  SDXL+ControlNet │  │
-│  │  GitHub Pages│    │  Render.com  │    │  IP-Adapter      │  │
-│  └──────┬───────┘    └──────┬───────┘    └──────────────────┘  │
-│         │                  │                                    │
-│         └────── Socket.io ─┘                                   │
-│                 (Real-time rooms)                               │
-└─────────────────────────────────────────────────────────────────┘
-```
+## Tech Stack
 
-## Folder Structure
+- **Frontend:** Next.js 14, TypeScript, Tailwind CSS, Framer Motion, Socket.IO client
+- **Backend:** FastAPI, Python 3.10, Redis, Pillow, python-socketio
+- **Realtime:** Socket.IO (rooms, live photo sync, generation progress)
 
-```
-snaptogether/
-├── frontend/                    # Next.js 14 App
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── page.tsx         # Landing page
-│   │   │   ├── create/          # Create room
-│   │   │   ├── join/            # Join room
-│   │   │   └── room/[code]/     # Room page
-│   │   ├── components/
-│   │   │   ├── ui/              # Base UI components
-│   │   │   ├── room/            # Room-specific components
-│   │   │   ├── upload/          # Photo upload components
-│   │   │   └── result/          # Result/export components
-│   │   ├── hooks/               # Custom React hooks
-│   │   ├── lib/                 # API clients, utils
-│   │   └── types/               # TypeScript types
-│   ├── public/
-│   ├── package.json
-│   ├── tailwind.config.ts
-│   └── next.config.js
-│
-├── backend/                     # FastAPI Python
-│   ├── app/
-│   │   ├── main.py              # App entry + Socket.io
-│   │   ├── routers/
-│   │   │   ├── rooms.py         # Room CRUD
-│   │   │   ├── uploads.py       # Photo upload
-│   │   │   └── generate.py      # AI generation
-│   │   ├── services/
-│   │   │   ├── room_service.py  # Room logic
-│   │   │   ├── storage.py       # File storage
-│   │   │   └── runpod.py        # RunPod API client
-│   │   └── models/
-│   │       └── schemas.py       # Pydantic models
-│   ├── ai/
-│   │   ├── pipeline.py          # SDXL + ControlNet pipeline
-│   │   ├── face_swap.py         # FaceSwap refinement
-│   │   └── runpod_handler.py    # RunPod serverless handler
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-└── docs/
-    ├── DEPLOYMENT.md
-    └── API.md
-```
+## Running Locally
 
-## Quick Start
+### Frontend
 
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- RunPod account (GPU inference)
-- Render.com account (backend hosting)
-
-### 1. Frontend Setup
 ```bash
 cd frontend
 npm install
-cp .env.example .env.local
-# Edit .env.local with your backend URL
+cp .env.example .env.local   # then fill in values
 npm run dev
 ```
 
-### 2. Backend Setup
+Runs on http://localhost:3000
+
+### Backend
+
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
+source venv/bin/activate      # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env
-# Edit .env with your RunPod API key
+cp .env.example .env          # then fill in values
 uvicorn app.main:app --reload
 ```
 
-### 3. RunPod Deployment
-See `docs/DEPLOYMENT.md` for full GPU setup instructions.
+Runs on http://localhost:8000
 
-## Features
-- 🏠 **Room System** — Create/join rooms with 6-digit codes
-- 📸 **Multi-upload** — Up to 10 people upload photos
-- 🤖 **AI Generation** — SDXL + ControlNet + IP-Adapter
-- 🎭 **Scene Presets** — Birthday, café, beach, graduation, custom
-- 🎂 **Birthday Mode** — Auto birthday styling + text overlay
-- 📤 **Export** — Instagram post/story, download
-- ⚡ **Real-time** — Socket.io live status updates
+Redis is required. The backend will attempt to start a Docker Redis container automatically, or you can run it manually:
+
+```bash
+docker run -d -p 6379:6379 redis:alpine
+```
+
+## Environment Variables
+
+### Frontend (`frontend/.env.local`)
+
+| Variable | Description | Default |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | Backend HTTP base URL | `http://localhost:8000` |
+| `NEXT_PUBLIC_WS_URL` | Backend WebSocket base URL | `ws://localhost:8000` |
+
+### Backend (`backend/.env`)
+
+| Variable | Description | Default |
+|---|---|---|
+| `REDIS_URL` | Redis connection URL | `redis://localhost:6379` |
+| `APP_NAME` | Application name | `The Missing Booth` |
+| `FRONTEND_URL` | Frontend origin (for CORS) | `http://localhost:3000` |
+
+## Project Structure
+
+```
+themissingbooth/
+├── frontend/          # Next.js 14 app
+│   ├── src/
+│   │   ├── app/       # Pages (/, /create, /join, /room/[code])
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   └── lib/       # API client, store
+│   └── next.config.js
+└── backend/           # FastAPI app
+    ├── app/
+    │   ├── main.py    # App entry + Socket.IO
+    │   ├── routers/   # rooms, uploads, generate
+    │   └── services/  # room, storage, strip
+    ├── requirements.txt
+    └── Dockerfile
+```
